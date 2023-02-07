@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  CloudWatch Alarm Test
+Resources:
+  ErrorProcessedFiles:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Number of errors in processed PDF files pass the threshold in one hour"
+      AlarmName: "pdf-converter-files-error"
+      Namespace: pdf-converter
+      MetricName: error-pdf-file
+      Statistic: Sum
+      Period: 3600
+      Threshold: 5
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      TreatMissingData: missing
+  TotalPDFProcessingTimeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Average processing time exceeds threshold"
+      AlarmName: "processing-time-exceeds-alarm"
+      Namespace: pdf-converter
+      MetricName: pdf-processing-time
+      Statistic: Average
+      Period: 86400
+      Threshold: 15000
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      TreatMissingData: missing
+      Unit: Milliseconds
